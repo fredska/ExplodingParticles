@@ -15,8 +15,13 @@ TODO:
 Lots of stuff!
 
 -> Main Screen
+
 -> Reset button
+
 -> Configuration
+
 -> Levels
+
 -> Sounds
+
 -> ScoreBoard
