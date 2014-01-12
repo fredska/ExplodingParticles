@@ -9,7 +9,7 @@ public class Main {
 		cfg.title = "ExplodingParticles";
 		cfg.useGL20 = false;
 		cfg.width = 800;
-		cfg.height = 600;
+		cfg.height = 800;
 		
 		new LwjglApplication(new Game(), cfg);
 	}
