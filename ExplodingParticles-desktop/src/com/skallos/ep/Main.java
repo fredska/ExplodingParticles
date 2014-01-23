@@ -8,8 +8,8 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "ExplodingParticles";
 		cfg.useGL20 = false;
-		cfg.width = 800;
-		cfg.height = 800;
+		cfg.width = 400;
+		cfg.height = 400;
 		
 		new LwjglApplication(new Game(), cfg);
 	}
