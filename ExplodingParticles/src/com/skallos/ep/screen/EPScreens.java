@@ -25,6 +25,12 @@ public enum EPScreens {
 		protected com.badlogic.gdx.Screen getScreenInstance(){
 			return new GameScreen();
 		}
+	},
+	LEVEL_OVER{
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance(){
+			return new LevelOverScreen();
+		}
 	};
 	
 	protected abstract com.badlogic.gdx.Screen getScreenInstance();

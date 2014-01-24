@@ -38,7 +38,7 @@ public class Particle {
 		}
 		
 		if(isDead()){
-			//Get the slope between the paricle position & explosion position
+			//Get the slope between the particle position & explosion position
 //			float slope = (explosionPosition.y - this.position.y) / (explosionPosition.x - this.position.x); 
 			explosions.add(new Explosion(position));
 		}

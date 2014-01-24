@@ -46,7 +46,6 @@ class MainMenuScreen implements Screen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				ScreenManager.getInstance().dispose(EPScreens.MAIN_MENU);
 				ScreenManager.getInstance().show(EPScreens.GAME);
 				return super.touchDown(event, x, y, pointer, button);
 			}
@@ -56,7 +55,6 @@ class MainMenuScreen implements Screen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				ScreenManager.getInstance().dispose(EPScreens.MAIN_MENU);
 				ScreenManager.getInstance().show(EPScreens.CREDITS);
 				return super.touchDown(event, x, y, pointer, button);
 			}

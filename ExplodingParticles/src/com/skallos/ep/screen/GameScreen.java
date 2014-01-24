@@ -34,6 +34,8 @@ public class GameScreen implements Screen {
 	private Button resetButton;
 	private Label particleCount;
 	
+	private boolean isLeftButtonPushedOnStart;
+	private boolean hasChainReactionStarted;
 	
 	private final int SCREEN_HEIGHT = Gdx.graphics.getHeight();
 	private final int SCREEN_WIDTH = Gdx.graphics.getWidth();
@@ -48,12 +50,18 @@ public class GameScreen implements Screen {
 		
 		particles = new LinkedList<Particle>();
 
+		//Create n number of particles;  Randomly placed inside screen with random velocity
 		for (int c = 0; c < 250; c++) {
 			particles.add(new Particle(5, new Vector2(MathUtils.random(SCREEN_WIDTH),
 					MathUtils.random(SCREEN_HEIGHT)), new Vector2(MathUtils.random(-100,
 					100), MathUtils.random(-100, 100))));
 		}
 		explosions = new LinkedList<Explosion>();
+		
+		//Set the boolean value if the left mouse button is pressed on initialization
+		isLeftButtonPushedOnStart = Gdx.input.isButtonPressed(Buttons.LEFT);
+		hasChainReactionStarted = false;
+		
 	}
 	
 	private void initializeStage(){
@@ -128,17 +136,25 @@ public class GameScreen implements Screen {
 		}
 	}
 	
+	
 	private void getPlayerInput(){
-		if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
+		if (Gdx.input.isButtonPressed(Buttons.LEFT) && !isLeftButtonPushedOnStart && !hasChainReactionStarted) {
 			explosions.add(new Explosion(new Vector2(Gdx.input.getX(),
 					Gdx.graphics.getHeight() - Gdx.input.getY())));
+			hasChainReactionStarted = true;
 		}
-		if (Gdx.input.isButtonPressed(Buttons.RIGHT)) {
-			Vector2 newVelocity = new Vector2(MathUtils.random(-100, 100),
-					MathUtils.random(-100, 100));
-			particles.add(new Particle(5, new Vector2(Gdx.input.getX(),
-					Gdx.graphics.getHeight() - Gdx.input.getY()), newVelocity));
+		
+		if(!Gdx.input.isButtonPressed(Buttons.LEFT)){
+			isLeftButtonPushedOnStart = false;
 		}
+		
+		//Generate more particles in the middle of a game if on the desktop
+//		if (Gdx.input.isButtonPressed(Buttons.RIGHT)) {
+//			Vector2 newVelocity = new Vector2(MathUtils.random(-100, 100),
+//					MathUtils.random(-100, 100));
+//			particles.add(new Particle(5, new Vector2(Gdx.input.getX(),
+//					Gdx.graphics.getHeight() - Gdx.input.getY()), newVelocity));
+//		}
 	}
 	
 	@Override
@@ -155,6 +171,10 @@ public class GameScreen implements Screen {
 		//Get any player input
 		getPlayerInput();
 		
+		//Check if the explosions are finished
+		if(hasChainReactionStarted && explosions.isEmpty()){
+			ScreenManager.getInstance().show(EPScreens.LEVEL_OVER);
+		}
 		//Update the Particle Count Label
 		particleCount.setText("Particle Count: " + particles.size());
 		
