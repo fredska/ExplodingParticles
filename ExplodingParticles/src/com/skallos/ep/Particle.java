@@ -30,7 +30,9 @@ public class Particle {
 		if(explosions.isEmpty()) return;
 //		Vector2 explosionPosition = new Vector2();
 		for(Explosion explosion : explosions){
-			if(explosion.getPosition().dst(this.position) <= (explosion.getCurrentRadius() + this.radius)){
+			if(explosion.getPosition().dst2(this.position) <= 
+					((explosion.getCurrentRadius() + this.radius) * 
+							(explosion.getCurrentRadius() + this.radius))){
 				this.isDead = true;
 //				explosionPosition = explosion.getPosition();
 				break;

@@ -1,7 +1,11 @@
 package com.skallos.ep.screen;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -40,6 +44,7 @@ public class GameScreen implements Screen {
 	private final int SCREEN_HEIGHT = Gdx.graphics.getHeight();
 	private final int SCREEN_WIDTH = Gdx.graphics.getWidth();
 	
+	
 	private void initialize(){
 		initializeStage();
 		initializeGameAssets();
@@ -51,7 +56,7 @@ public class GameScreen implements Screen {
 		particles = new LinkedList<Particle>();
 
 		//Create n number of particles;  Randomly placed inside screen with random velocity
-		for (int c = 0; c < 250; c++) {
+		for (int c = 0; c < 300; c++) {
 			particles.add(new Particle(5, new Vector2(MathUtils.random(SCREEN_WIDTH),
 					MathUtils.random(SCREEN_HEIGHT)), new Vector2(MathUtils.random(-100,
 					100), MathUtils.random(-100, 100))));
@@ -173,6 +178,7 @@ public class GameScreen implements Screen {
 		
 		//Check if the explosions are finished
 		if(hasChainReactionStarted && explosions.isEmpty()){
+			ScreenManager.getInstance().dispose(EPScreens.GAME);
 			ScreenManager.getInstance().show(EPScreens.LEVEL_OVER);
 		}
 		//Update the Particle Count Label
@@ -217,8 +223,12 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		//Clear the screen of any extra stuffs
+		Gdx.gl.glClearColor(0, 0, 0, 0);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		stage.dispose();
+		particles.clear();
+		explosions.clear();
 	}
 
 }

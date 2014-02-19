@@ -49,7 +49,6 @@ public class CreditsScreen implements Screen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				System.out.println("Touch DOWN Event Fucking Happened ya'll!");
 				ScreenManager.getInstance().dispose(
 						EPScreens.CREDITS);
 				ScreenManager.getInstance().show(EPScreens.MAIN_MENU);
