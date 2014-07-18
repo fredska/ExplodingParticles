@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.skallos.ep.GameState;
 
 public class LevelOverScreen implements Screen {
 
@@ -53,8 +54,10 @@ public class LevelOverScreen implements Screen {
 				return super.touchDown(event, x, y, pointer, button);
 			}
 		});
-		
-		table.add("You have Completed / Failed the Level!");
+		if(GameState.currentState == GameState.LEVEL_FINISHED_COMPLETE)
+		table.add("Enough particles have been destroyed to move on!");
+		else
+			table.add("The air has become too contaminated for further development.");
 		table.row();
 		table.add(restartLevel);
 		table.row();
@@ -64,19 +67,16 @@ public class LevelOverScreen implements Screen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 

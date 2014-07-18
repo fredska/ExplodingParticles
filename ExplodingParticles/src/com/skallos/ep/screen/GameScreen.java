@@ -23,8 +23,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.skallos.ep.Configuration;
 import com.skallos.ep.Explosion;
+import com.skallos.ep.GameState;
 import com.skallos.ep.Particle;
+import com.skallos.ep.Zone;
 
 public class GameScreen implements Screen {
 
@@ -44,8 +47,12 @@ public class GameScreen implements Screen {
 	private final int SCREEN_HEIGHT = Gdx.graphics.getHeight();
 	private final int SCREEN_WIDTH = Gdx.graphics.getWidth();
 	
+	Map<Integer, Zone> zoneMap;
+	private final int numOfZoneColumns = 15;
+	private final int numOfZoneRows = 15;
 	
 	private void initialize(){
+		zoneMap = new HashMap<Integer, Zone>();
 		initializeStage();
 		initializeGameAssets();
 	}
@@ -56,10 +63,27 @@ public class GameScreen implements Screen {
 		particles = new LinkedList<Particle>();
 
 		//Create n number of particles;  Randomly placed inside screen with random velocity
-		for (int c = 0; c < 300; c++) {
-			particles.add(new Particle(5, new Vector2(MathUtils.random(SCREEN_WIDTH),
-					MathUtils.random(SCREEN_HEIGHT)), new Vector2(MathUtils.random(-100,
-					100), MathUtils.random(-100, 100))));
+		for (int c = 0; c < 250; c++) {
+			Vector2 position = new Vector2(MathUtils.random(SCREEN_WIDTH),
+					MathUtils.random(SCREEN_HEIGHT));
+			Particle newParticle = new Particle(position);
+			//Original code work
+			particles.add(newParticle);
+			
+			/*
+			 * This section is the beginning work to break particles into their own zones.
+			 * The goal is during the explosion phase, an explosion only needs to check 
+			 * particle collision in nearby zones instead of the entire scene
+			 */
+			int zoneId = Zone.getZoneId(SCREEN_HEIGHT, SCREEN_WIDTH, numOfZoneColumns, numOfZoneRows, position);
+			Zone zone = zoneMap.get(zoneId);
+			
+			if(zone == null){
+				zone = new Zone();
+				zone.setZoneId(zoneId);
+				zone.addParticle(newParticle);
+				zoneMap.put(zoneId, zone);
+			}
 		}
 		explosions = new LinkedList<Explosion>();
 		
@@ -179,6 +203,10 @@ public class GameScreen implements Screen {
 		//Check if the explosions are finished
 		if(hasChainReactionStarted && explosions.isEmpty()){
 			ScreenManager.getInstance().dispose(EPScreens.GAME);
+			if(((float)particles.size() / 250f) < 0.1f)
+				GameState.currentState = GameState.LEVEL_FINISHED_COMPLETE;
+			else
+				GameState.currentState = GameState.LEVEL_FINISHED_FAILED;
 			ScreenManager.getInstance().show(EPScreens.LEVEL_OVER);
 		}
 		//Update the Particle Count Label

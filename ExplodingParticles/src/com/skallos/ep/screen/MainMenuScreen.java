@@ -60,12 +60,23 @@ class MainMenuScreen implements Screen {
 				return super.touchDown(event, x, y, pointer, button);
 			}
 		});
+		TextButton exitGameButton = new TextButton("Exit", skin);
+		exitGameButton.addListener(new InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				System.exit(0);
+				return super.touchDown(event, x, y, pointer, button);
+			}
+		});
 		table.add(gameTitleLabel);
 		table.row();
 		table.add(gameScreenButton);
 		table.row();
 		table.add(creditScreenButton);
-		table.drawDebug(stage);
+		table.row();
+		table.add(exitGameButton);
+		Table.drawDebug(stage);
 		stage.addActor(table);
 	}
 

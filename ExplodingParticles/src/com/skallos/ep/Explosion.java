@@ -22,12 +22,12 @@ public class Explosion {
 	public Explosion(Vector2 position){
 		this.position = position;
 		this.lifeTime = 0;
-		this.startRadius = 5;
-		this.maxRadius = 20;
+		this.startRadius = Configuration.EXPLOSION_START_RADIUS.getValue();
+		this.maxRadius = Configuration.EXPLOSION_MAXIMUM_RADIUS.getValue();
 		
-		this.growthTime = 0.75f; //Growth in seconds;
-		this.adultTimeLength = 0.4f; //Adult life in seconds;
-		this.shrinkTimeLength = 1f;
+		this.growthTime = Configuration.EXPLOSION_GROWTH_TIME.getValue(); //Growth in seconds;
+		this.adultTimeLength = Configuration.EXPLOSION_ADULT_TIME_LENGTH.getValue(); //Adult life in seconds;
+		this.shrinkTimeLength = Configuration.EXPLOSION_SHRINK_TIME_LENGTH.getValue();
 		this.currentRadius = this.startRadius;
 		this.maxLifeTime = (growthTime + adultTimeLength + shrinkTimeLength);
 	}
