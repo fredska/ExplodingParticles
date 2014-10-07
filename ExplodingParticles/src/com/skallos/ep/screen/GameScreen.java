@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.skallos.ep.Configuration;
 import com.skallos.ep.Explosion;
 import com.skallos.ep.GameState;
 import com.skallos.ep.Particle;
@@ -45,9 +46,7 @@ public class GameScreen implements Screen {
 	private final int SCREEN_HEIGHT = Gdx.graphics.getHeight();
 	private final int SCREEN_WIDTH = Gdx.graphics.getWidth();
 	
-//	Map<Integer, Zone> zoneMap;
-	private final int numOfZoneColumns = 15;
-	private final int numOfZoneRows = 15;
+	private final int NUM_OF_STARTING_PARTICLES = 450;
 	
 	private void initialize(){
 //		zoneMap = new HashMap<Integer, Zone>();
@@ -61,9 +60,19 @@ public class GameScreen implements Screen {
 		particles = new LinkedList<Particle>();
 
 		//Create n number of particles;  Randomly placed inside screen with random velocity
-		for (int c = 0; c < 250; c++) {
+		for (int c = 0; c < NUM_OF_STARTING_PARTICLES; c++) {
 			Vector2 position = new Vector2(MathUtils.random(SCREEN_WIDTH),
 					MathUtils.random(SCREEN_HEIGHT));
+			if(position.x < Configuration.PARTICLE_STD_RADIUS.getValue())
+				position.x += Configuration.PARTICLE_STD_RADIUS.getValue();
+			if(position.x >= Configuration.PARTICLE_STD_RADIUS.getValue())
+				position.x -= Configuration.PARTICLE_STD_RADIUS.getValue();
+			
+			if(position.y < Configuration.PARTICLE_STD_RADIUS.getValue())
+				position.y += Configuration.PARTICLE_STD_RADIUS.getValue();
+			if(position.y >= Configuration.PARTICLE_STD_RADIUS.getValue())
+				position.y -= Configuration.PARTICLE_STD_RADIUS.getValue();
+			
 			Particle newParticle = new Particle(position);
 			//Original code work
 			particles.add(newParticle);
@@ -192,21 +201,24 @@ public class GameScreen implements Screen {
 		//Get the delta time determined by libGDX
 		delta = Gdx.graphics.getDeltaTime();
 		
+		
+		
+		//Check if the explosions are finished
+		if(hasChainReactionStarted && explosions.isEmpty()){
+			
+			if(((float)particles.size() / NUM_OF_STARTING_PARTICLES) < 0.01f)
+				GameState.currentState = GameState.LEVEL_FINISHED_COMPLETE;
+			else
+				GameState.currentState = GameState.LEVEL_FINISHED_FAILED;
+			ScreenManager.getInstance().dispose(EPScreens.GAME);
+			ScreenManager.getInstance().show(EPScreens.LEVEL_OVER);
+		}
+		
 		//Run the simulation of particles
 		runSimulation(delta);
 		
 		//Get any player input
 		getPlayerInput();
-		
-		//Check if the explosions are finished
-		if(hasChainReactionStarted && explosions.isEmpty()){
-			ScreenManager.getInstance().dispose(EPScreens.GAME);
-			if(((float)particles.size() / 250f) < 0.1f)
-				GameState.currentState = GameState.LEVEL_FINISHED_COMPLETE;
-			else
-				GameState.currentState = GameState.LEVEL_FINISHED_FAILED;
-			ScreenManager.getInstance().show(EPScreens.LEVEL_OVER);
-		}
 		//Update the Particle Count Label
 		particleCount.setText("Particle Count: " + particles.size());
 		

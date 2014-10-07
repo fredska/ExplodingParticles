@@ -55,7 +55,7 @@ public class LevelOverScreen implements Screen {
 			}
 		});
 		if(GameState.currentState == GameState.LEVEL_FINISHED_COMPLETE)
-		table.add("Enough particles have been destroyed to move on!");
+			table.add("Enough particles have been destroyed to move on!");
 		else
 			table.add("The air has become too contaminated for further development.");
 		table.row();
