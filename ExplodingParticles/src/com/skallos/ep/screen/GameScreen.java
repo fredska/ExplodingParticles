@@ -23,11 +23,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.skallos.ep.Configuration;
 import com.skallos.ep.Explosion;
 import com.skallos.ep.GameState;
 import com.skallos.ep.Particle;
-import com.skallos.ep.Zone;
 
 public class GameScreen implements Screen {
 
@@ -47,12 +45,12 @@ public class GameScreen implements Screen {
 	private final int SCREEN_HEIGHT = Gdx.graphics.getHeight();
 	private final int SCREEN_WIDTH = Gdx.graphics.getWidth();
 	
-	Map<Integer, Zone> zoneMap;
+//	Map<Integer, Zone> zoneMap;
 	private final int numOfZoneColumns = 15;
 	private final int numOfZoneRows = 15;
 	
 	private void initialize(){
-		zoneMap = new HashMap<Integer, Zone>();
+//		zoneMap = new HashMap<Integer, Zone>();
 		initializeStage();
 		initializeGameAssets();
 	}
@@ -75,15 +73,15 @@ public class GameScreen implements Screen {
 			 * The goal is during the explosion phase, an explosion only needs to check 
 			 * particle collision in nearby zones instead of the entire scene
 			 */
-			int zoneId = Zone.getZoneId(SCREEN_HEIGHT, SCREEN_WIDTH, numOfZoneColumns, numOfZoneRows, position);
-			Zone zone = zoneMap.get(zoneId);
-			
-			if(zone == null){
-				zone = new Zone();
-				zone.setZoneId(zoneId);
-				zone.addParticle(newParticle);
-				zoneMap.put(zoneId, zone);
-			}
+//			int zoneId = Zone.getZoneId(SCREEN_HEIGHT, SCREEN_WIDTH, numOfZoneColumns, numOfZoneRows, position);
+//			Zone zone = zoneMap.get(zoneId);
+//			
+//			if(zone == null){
+//				zone = new Zone();
+//				zone.setZoneId(zoneId);
+//				zone.addParticle(newParticle);
+//				zoneMap.put(zoneId, zone);
+//			}
 		}
 		explosions = new LinkedList<Explosion>();
 		
